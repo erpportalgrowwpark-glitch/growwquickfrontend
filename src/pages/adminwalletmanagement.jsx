@@ -21,7 +21,7 @@ export default function AdminWalletManagement() {
 
   const fetchRequests = async () => {
     try {
-      const response = await axios.get('import.meta.env.VITE_API_URL/api/admin/wallet/requests', getAdminHeaders());
+      const response = await axios.get('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/admin/wallet/requests', getAdminHeaders());
       setRequests(response.data);
     } catch (error) {
       if (error.response?.status === 401) navigate('/admin-login');
@@ -30,7 +30,7 @@ export default function AdminWalletManagement() {
 
   const fetchHistory = async () => {
     try {
-      const response = await axios.get('import.meta.env.VITE_API_URL/api/admin/wallet/history', getAdminHeaders());
+      const response = await axios.get('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/admin/wallet/history', getAdminHeaders());
       setHistory(response.data);
     } catch (error) {
       console.error('Failed to fetch history', error);
@@ -39,7 +39,7 @@ export default function AdminWalletManagement() {
 
   const handleResolve = async (requestId, action) => {
     try {
-      await axios.post('import.meta.env.VITE_API_URL/api/admin/wallet/resolve', { requestId, action }, getAdminHeaders());
+      await axios.post('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/admin/wallet/resolve', { requestId, action }, getAdminHeaders());
       alert(`Request ${action}ed successfully!`);
       // Refresh both lists to move the item from pending to history
       fetchRequests();

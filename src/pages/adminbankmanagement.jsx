@@ -21,7 +21,7 @@ export default function AdminBankManagement() {
   useEffect(() => {
     const fetchCurrentDetails = async () => {
       try {
-        const response = await axios.get('import.meta.env.VITE_API_URL/api/admin-bank', getAdminHeaders());
+        const response = await axios.get('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/admin-bank', getAdminHeaders());
         if (response.data) {
           setBankName(response.data.bankName);
           setAccountName(response.data.accountName);
@@ -40,7 +40,7 @@ export default function AdminBankManagement() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'import.meta.env.VITE_API_URL/api/admin-bank/update',
+        '[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/admin-bank/update',
         { bankName, accountName, accountNumber, ifscCode, branchName },
         getAdminHeaders()
       );

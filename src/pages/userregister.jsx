@@ -13,7 +13,7 @@ export default function UserRegister() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('import.meta.env.VITE_API_URL/api/auth/register', {
+      const response = await axios.post('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/auth/register', {
         name,
         email,
         password

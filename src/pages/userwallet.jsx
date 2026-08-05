@@ -35,17 +35,17 @@ export default function UserWallet() {
 
   const fetchWalletData = async () => {
     try {
-      const balRes = await axios.get('import.meta.env.VITE_API_URL/api/wallet/balance', getAuthHeaders());
+      const balRes = await axios.get('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/wallet/balance', getAuthHeaders());
       setBalance(balRes.data.balance);
       
-      const histRes = await axios.get('import.meta.env.VITE_API_URL/api/wallet/history', getAuthHeaders());
+      const histRes = await axios.get('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/wallet/history', getAuthHeaders());
       setHistory(histRes.data);
 
-      const banksRes = await axios.get('import.meta.env.VITE_API_URL/api/bank', getAuthHeaders());
+      const banksRes = await axios.get('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/bank', getAuthHeaders());
       setSavedBanks(banksRes.data);
 
       // Fetch dynamic admin bank details
-      const adminBankRes = await axios.get('import.meta.env.VITE_API_URL/api/admin-bank', getAuthHeaders());
+      const adminBankRes = await axios.get('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/admin-bank', getAuthHeaders());
       setAdminBankDetails(adminBankRes.data);
     } catch (error) {
       if (error.response?.status === 401) navigate('/login');
@@ -55,7 +55,7 @@ export default function UserWallet() {
   const handleDepositSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('import.meta.env.VITE_API_URL/api/wallet/deposit', { amount: Number(depositAmount), utr }, getAuthHeaders());
+      const response = await axios.post('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/wallet/deposit', { amount: Number(depositAmount), utr }, getAuthHeaders());
       setMessage(response.data.message);
       setDepositAmount(''); setUtr('');
       fetchWalletData(); 
@@ -68,7 +68,7 @@ export default function UserWallet() {
   const handleWithdrawSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('import.meta.env.VITE_API_URL/api/wallet/withdraw', { amount: Number(withdrawAmount), bankName, branchName, accountNumber, ifscCode }, getAuthHeaders());
+      const response = await axios.post('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/wallet/withdraw', { amount: Number(withdrawAmount), bankName, branchName, accountNumber, ifscCode }, getAuthHeaders());
       setMessage(response.data.message);
       fetchWalletData(); 
       setWithdrawAmount(''); setBankName(''); setBranchName(''); setAccountNumber(''); setIfscCode('');
