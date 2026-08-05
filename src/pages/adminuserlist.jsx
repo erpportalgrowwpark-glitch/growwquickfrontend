@@ -14,7 +14,7 @@ export default function AdminUserList() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/admin/users', getAdminHeaders());
+        const response = await axios.get('https://quickgrowwbackend.onrender.com/api/admin/users', getAdminHeaders());
         setUsers(response.data);
       } catch (error) {
         if (error.response?.status === 401) navigate('/admin-login');

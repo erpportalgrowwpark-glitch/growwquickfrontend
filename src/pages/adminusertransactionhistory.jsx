@@ -16,7 +16,7 @@ export default function AdminUserTransactionHistory() {
   useEffect(() => {
     const fetchUserHistory = async () => {
       try {
-        const response = await axios.get(`[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/admin/users/${id}/transactions`, getAdminHeaders());
+        const response = await axios.get(`https://quickgrowwbackend.onrender.com/api/admin/users/${id}/transactions`, getAdminHeaders());
         setUserData(response.data.user);
         setTransactions(response.data.transactions);
       } catch (error) {

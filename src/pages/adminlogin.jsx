@@ -12,7 +12,7 @@ export default function AdminLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/auth/admin-login', {
+      const response = await axios.post('https://quickgrowwbackend.onrender.com/api/auth/admin-login', {
         username,
         password
       });

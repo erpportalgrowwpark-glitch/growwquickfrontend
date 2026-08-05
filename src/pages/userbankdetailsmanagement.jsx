@@ -23,7 +23,7 @@ export default function UserBankDetailsManagement() {
 
   const fetchBanks = async () => {
     try {
-      const response = await axios.get('[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/bank', getAuthHeaders());
+      const response = await axios.get('https://quickgrowwbackend.onrender.com/api/bank', getAuthHeaders());
       setBanks(response.data);
     } catch (error) {
       if (error.response?.status === 401) navigate('/login');
@@ -34,7 +34,7 @@ export default function UserBankDetailsManagement() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        '[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/bank/add', 
+        'https://quickgrowwbackend.onrender.com/api/bank/add', 
         { bankName, branchName, accountNumber, ifscCode }, 
         getAuthHeaders()
       );
@@ -50,7 +50,7 @@ export default function UserBankDetailsManagement() {
   const handleDeleteBank = async (id) => {
     if (!window.confirm('Are you sure you want to delete this bank card?')) return;
     try {
-      await axios.delete(`[https://quickgrowwbackend.onrender.com](https://quickgrowwbackend.onrender.com)/api/bank/${id}`, getAuthHeaders());
+      await axios.delete(`https://quickgrowwbackend.onrender.com/api/bank/${id}`, getAuthHeaders());
       fetchBanks(); // Refresh list
     } catch (error) {
       alert('Failed to delete bank');
