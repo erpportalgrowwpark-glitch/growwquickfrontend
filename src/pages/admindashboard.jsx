@@ -18,6 +18,7 @@ export default function AdminDashboard() {
         >
           Wallet Management
         </button>
+        <button onClick={() => navigate('/admin-investment')} style={btnStyle('#f39c12')}>Investment Management</button>
         <button 
           onClick={() => navigate('/admin-users')} 
           style={btnStyle('#17a2b8')}

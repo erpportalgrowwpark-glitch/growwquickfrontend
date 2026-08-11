@@ -14,6 +14,7 @@ import AdminBankManagement from './pages/adminbankmanagement';
 import UserInvestmentHub from './pages/userinvestmenthub';
 import UserInvestmentsHistory from './pages/userinvestmentshistory';
 import UserPayoutHistory from './pages/userpayouthistory';
+import AdminInvestmentManagement from './pages/admininvestmentmanagement';
 
 // ADDED IMPORT FOR INVESTMENTS
 import UserInvestment from './pages/userinvestment'; 
@@ -44,6 +45,7 @@ function App() {
       <Route path="/admin-users" element={<AdminUserList />} />  
       <Route path="/admin-user-transactions/:id" element={<AdminUserTransactionHistory />} />
       <Route path="/admin-bank" element={<AdminBankManagement />} />
+      <Route path="/admin-investment" element={<AdminInvestmentManagement />} />
     </Routes>
   );
 }
