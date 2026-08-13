@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function AdminWalletManagement() {
-  const [activeTab, setActiveTab] = useState('pending'); // 'pending' or 'history'
+  const [activeTab, setActiveTab] = useState('pending');
   const [requests, setRequests] = useState([]);
   const [history, setHistory] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null); 
@@ -41,7 +41,6 @@ export default function AdminWalletManagement() {
     try {
       await axios.post('https://quickgrowwbackend.onrender.com/api/admin/wallet/resolve', { requestId, action }, getAdminHeaders());
       alert(`Request ${action}ed successfully!`);
-      // Refresh both lists to move the item from pending to history
       fetchRequests();
       fetchHistory();
       setSelectedRequest(null); 
@@ -124,7 +123,7 @@ export default function AdminWalletManagement() {
         )}
       </div>
 
-      {/* VIEW DETAILS MODAL (Only shows for Pending Requests) */}
+      {/* VIEW DETAILS MODAL */}
       {selectedRequest && (
         <div style={modalOverlayStyle}>
           <div style={modalContentStyle}>
@@ -133,14 +132,24 @@ export default function AdminWalletManagement() {
               <p><strong>Name:</strong> {selectedRequest.userId?.name}</p>
               <p><strong>Email:</strong> {selectedRequest.userId?.email}</p>
               <p><strong>Type:</strong> {selectedRequest.type.toUpperCase()}</p>
-              <p><strong>Amount:</strong> ₹{selectedRequest.amount}</p>
               
+              {/* DISPLAY DEPOSIT LOGIC */}
               {selectedRequest.type === 'deposit' && (
-                <p><strong>UTR/Txn ID:</strong> {selectedRequest.utr}</p>
+                <>
+                  <p><strong>Amount:</strong> ₹{selectedRequest.amount}</p>
+                  <p><strong>UTR/Txn ID:</strong> {selectedRequest.utr}</p>
+                </>
               )}
               
+              {/* DISPLAY WITHDRAWAL LOGIC WITH TDS */}
               {selectedRequest.type === 'withdraw' && (
                 <>
+                  <p style={{ margin: '5px 0' }}><strong>Gross Amount:</strong> ₹{selectedRequest.amount}</p>
+                  <p style={{ margin: '5px 0', color: '#dc3545' }}><strong>TDS (1%):</strong> - ₹{selectedRequest.tdsAmount}</p>
+                  <p style={{ margin: '5px 0 15px 0', fontSize: '18px', color: '#28a745', fontWeight: 'bold' }}>
+                    PAY TO BANK: ₹{selectedRequest.netAmount}
+                  </p>
+                  
                   <hr style={{ margin: '10px 0', borderColor: '#ddd' }} />
                   <p><strong>Bank Name:</strong> {selectedRequest.bankName}</p>
                   <p><strong>Branch:</strong> {selectedRequest.branchName}</p>
@@ -149,6 +158,7 @@ export default function AdminWalletManagement() {
                 </>
               )}
             </div>
+            
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
               <button onClick={() => handleResolve(selectedRequest._id, 'accept')} style={{ flex: 1, ...btnStyle('#28a745') }}>Accept Request</button>
               <button onClick={() => handleResolve(selectedRequest._id, 'reject')} style={{ flex: 1, ...btnStyle('#dc3545') }}>Reject Request</button>

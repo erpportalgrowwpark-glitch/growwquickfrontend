@@ -6,7 +6,7 @@ export default function UserWallet() {
   const [balance, setBalance] = useState(0);
   const [history, setHistory] = useState([]);
   const [savedBanks, setSavedBanks] = useState([]);
-  const [adminBankDetails, setAdminBankDetails] = useState(null); // Added state for dynamic admin bank
+  const [adminBankDetails, setAdminBankDetails] = useState(null); 
   const [message, setMessage] = useState('');
   
   // Deposit States
@@ -44,7 +44,6 @@ export default function UserWallet() {
       const banksRes = await axios.get('https://quickgrowwbackend.onrender.com/api/bank', getAuthHeaders());
       setSavedBanks(banksRes.data);
 
-      // Fetch dynamic admin bank details
       const adminBankRes = await axios.get('https://quickgrowwbackend.onrender.com/api/admin-bank', getAuthHeaders());
       setAdminBankDetails(adminBankRes.data);
     } catch (error) {
@@ -99,7 +98,6 @@ export default function UserWallet() {
         <button onClick={() => navigate('/bank-management')} style={btnStyle('#17a2b8')}>Manage Banks</button>
       </div>
 
-      {/* TRANSACTION HISTORY TABLE */}
       <div style={{ textAlign: 'left', marginTop: '40px' }}>
         <h3>Transaction History</h3>
         {history.length === 0 ? (
@@ -130,13 +128,11 @@ export default function UserWallet() {
 
       <button onClick={() => navigate('/dashboard')} style={{ marginTop: '40px', ...btnStyle('#333') }}>Back to Dashboard</button>
 
-      {/* DYNAMIC DEPOSIT MODAL */}
+      {/* DEPOSIT MODAL */}
       {showDepositModal && (
         <div style={modalOverlayStyle}>
           <div style={modalContentStyle}>
             <h3>Deposit Money</h3>
-            
-            {/* Dynamic Admin Bank Details Display */}
             <div style={{ backgroundColor: '#e9ecef', padding: '15px', borderRadius: '5px', textAlign: 'left', marginBottom: '15px' }}>
               <p style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: 'bold' }}>Bank Details for Transfer:</p>
               {adminBankDetails ? (
@@ -151,9 +147,7 @@ export default function UserWallet() {
                 <p style={{ fontSize: '14px', color: 'red' }}>Bank details currently unavailable. Please contact Admin.</p>
               )}
             </div>
-
             {message && <p style={{ color: message.includes('success') ? 'green' : 'red' }}>{message}</p>}
-            
             <form onSubmit={handleDepositSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <input type="number" placeholder="Enter Amount" value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} required style={inputStyle} />
               <input type="text" placeholder="Enter UTR / Txn ID" value={utr} onChange={(e) => setUtr(e.target.value)} required style={inputStyle} />
@@ -166,7 +160,7 @@ export default function UserWallet() {
         </div>
       )}
 
-      {/* WITHDRAW MODAL WITH AUTO-FILL */}
+      {/* WITHDRAW MODAL WITH LIVE TDS CALCULATION */}
       {showWithdrawModal && (
         <div style={modalOverlayStyle}>
           <div style={{ ...modalContentStyle, maxWidth: '500px' }}>
@@ -193,11 +187,25 @@ export default function UserWallet() {
 
             {message && <p style={{ color: message.includes('success') ? 'green' : 'red' }}>{message}</p>}
             <form onSubmit={handleWithdrawSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
+              
               <input type="number" placeholder="Withdraw Amount" value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} required style={inputStyle} />
+              
+              {/* LIVE TDS CALCULATION UI */}
+              {withdrawAmount && Number(withdrawAmount) > 0 && (
+                <div style={{ backgroundColor: '#e9ecef', padding: '10px', borderRadius: '5px', textAlign: 'left', fontSize: '14px', borderLeft: '4px solid #f39c12' }}>
+                  <p style={{ margin: '2px 0' }}>Gross Withdrawal: <b>₹{Number(withdrawAmount)}</b></p>
+                  <p style={{ margin: '2px 0', color: '#dc3545' }}>TDS Deduction (1%): <b>- ₹{(Number(withdrawAmount) * 0.01).toFixed(2)}</b></p>
+                  <p style={{ margin: '5px 0 0 0', fontWeight: 'bold', color: '#28a745', fontSize: '16px' }}>
+                    Net Amount to Bank: ₹{(Number(withdrawAmount) - (Number(withdrawAmount) * 0.01)).toFixed(2)}
+                  </p>
+                </div>
+              )}
+
               <input type="text" placeholder="Bank Name" value={bankName} onChange={(e) => setBankName(e.target.value)} required style={inputStyle} />
               <input type="text" placeholder="Branch Name" value={branchName} onChange={(e) => setBranchName(e.target.value)} required style={inputStyle} />
               <input type="text" placeholder="Account Number" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} required style={inputStyle} />
               <input type="text" placeholder="IFSC Code" value={ifscCode} onChange={(e) => setIfscCode(e.target.value)} required style={inputStyle} />
+              
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                 <button type="submit" style={{ flex: 1, ...btnStyle('#28a745') }}>Request Withdraw</button>
                 <button type="button" onClick={() => setShowWithdrawModal(false)} style={{ flex: 1, ...btnStyle('#dc3545') }}>Cancel</button>
