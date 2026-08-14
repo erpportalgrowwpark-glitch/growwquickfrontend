@@ -9,7 +9,7 @@ export default function UserBankDetailsManagement() {
   const [accountNumber, setAccountNumber] = useState('');
   const [ifscCode, setIfscCode] = useState('');
   const [message, setMessage] = useState('');
-  
+
   const navigate = useNavigate();
 
   const getAuthHeaders = () => {
@@ -34,8 +34,8 @@ export default function UserBankDetailsManagement() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'https://quickgrowwbackend.onrender.com/api/bank/add', 
-        { bankName, branchName, accountNumber, ifscCode }, 
+        'https://quickgrowwbackend.onrender.com/api/bank/add',
+        { bankName, branchName, accountNumber, ifscCode },
         getAuthHeaders()
       );
       setMessage(response.data.message);
@@ -204,21 +204,24 @@ export default function UserBankDetailsManagement() {
       </style>
 
       <div className="glass-container" style={containerStyle}>
-        
+
         {/* HEADER */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '20px', gap: '15px', flexWrap: 'wrap' }}>
           <h2 style={titleStyle}>Manage Banks</h2>
-          <button onClick={() => navigate('/wallet')} className="btn-outline">
-            Back to Wallet
+          <button onClick={() => navigate('/wallet')} style={{ width: '36px', height: '36px', padding: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', backgroundColor: '#ff4757', color: 'white', border: 'none', cursor: 'pointer', flexShrink: 0, boxShadow: '0 4px 10px rgba(255, 71, 87, 0.3)' }} title="Go Back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
           </button>
         </div>
 
         <div className="content-grid">
-          
+
           {/* LEFT: ADD BANK FORM */}
           <div className="form-section">
             <h3 style={sectionTitleStyle}>Add New Bank Card</h3>
-            
+
             {message && (
               <div style={{
                 padding: '10px',
@@ -251,7 +254,7 @@ export default function UserBankDetailsManagement() {
                 <label style={labelStyle}>IFSC Code</label>
                 <input type="text" placeholder="e.g. HDFC0001234" value={ifscCode} onChange={(e) => setIfscCode(e.target.value)} required className="custom-input" />
               </div>
-              
+
               <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>
                 Securely Save Bank
               </button>
@@ -261,7 +264,7 @@ export default function UserBankDetailsManagement() {
           {/* RIGHT: SAVED BANKS LIST */}
           <div className="cards-section">
             <h3 style={sectionTitleStyle}>Linked Bank Cards</h3>
-            
+
             {banks.length === 0 ? (
               <div style={{ padding: '30px', textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px dashed rgba(255,255,255,0.1)' }}>
                 <p style={{ color: '#a8b2d1', margin: 0 }}>No banks linked yet. Add a bank to easily withdraw your funds.</p>
@@ -272,7 +275,7 @@ export default function UserBankDetailsManagement() {
                   <div key={bank._id} className="saved-bank-card">
                     {/* Background decoration */}
                     <div style={{ position: 'absolute', right: '-20px', top: '-20px', width: '100px', height: '100px', background: 'rgba(255,255,255,0.02)', borderRadius: '50%', zIndex: 0 }}></div>
-                    
+
                     <div style={{ position: 'relative', zIndex: 1 }}>
                       <div className="mini-chip"></div>
                       <h4 style={{ margin: '0 0 8px 0', color: '#ffffff', fontSize: '18px', letterSpacing: '0.5px' }}>
@@ -312,7 +315,7 @@ export default function UserBankDetailsManagement() {
 
 // STYLES
 const pageStyle = {
-  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)', 
+  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)',
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'flex-start',
@@ -323,19 +326,19 @@ const pageStyle = {
 };
 
 const containerStyle = {
-  background: 'rgba(10, 25, 47, 0.7)', 
-  backdropFilter: 'blur(16px)', 
-  WebkitBackdropFilter: 'blur(16px)', 
-  border: '1px solid rgba(255, 255, 255, 0.2)', 
+  background: 'rgba(10, 25, 47, 0.7)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
   padding: '40px',
-  borderRadius: '20px', 
-  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)', 
+  borderRadius: '20px',
+  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
   maxWidth: '900px',
   width: '100%'
 };
 
 const titleStyle = {
-  color: '#ffffff', 
+  color: '#ffffff',
   margin: '0',
   fontSize: '28px',
   fontWeight: '800',

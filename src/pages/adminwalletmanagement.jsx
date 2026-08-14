@@ -5,13 +5,13 @@ import axios from 'axios';
 export default function AdminWalletManagement() {
   // Main Tab State (Pending vs History)
   const [activeTab, setActiveTab] = useState('pending');
-  
+
   // Sub Tab State for History Filtering
   const [historyTab, setHistoryTab] = useState('deposit'); // 'deposit', 'withdraw', 'interest'
 
   const [requests, setRequests] = useState([]);
   const [history, setHistory] = useState([]);
-  const [selectedRequest, setSelectedRequest] = useState(null); 
+  const [selectedRequest, setSelectedRequest] = useState(null);
   const navigate = useNavigate();
 
   const getAdminHeaders = () => {
@@ -47,7 +47,7 @@ export default function AdminWalletManagement() {
       await axios.post('https://quickgrowwbackend.onrender.com/api/admin/wallet/resolve', { requestId, action }, getAdminHeaders());
       fetchRequests();
       fetchHistory();
-      setSelectedRequest(null); 
+      setSelectedRequest(null);
     } catch (error) {
       alert('Error resolving request');
     }
@@ -140,30 +140,29 @@ export default function AdminWalletManagement() {
       </style>
 
       <div className="glass-container" style={containerStyle}>
-        
+
         {/* HEADER */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', gap: '15px', flexWrap: 'wrap' }}>
           <h2 style={titleStyle}>Wallet Management</h2>
-          <button onClick={() => navigate('/admin-dashboard')} className="btn-outline">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <button onClick={() => navigate('/admin-dashboard')} style={{ width: '36px', height: '36px', padding: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', backgroundColor: '#ff4757', color: 'white', border: 'none', cursor: 'pointer', flexShrink: 0, boxShadow: '0 4px 10px rgba(255, 71, 87, 0.3)' }} title="Go Back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            Dashboard
           </button>
         </div>
 
         {/* MAIN TABS (Pending vs History) */}
         <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.1)', marginBottom: '25px', backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: '12px 12px 0 0', overflow: 'hidden' }}>
-          <button 
-            onClick={() => setActiveTab('pending')} 
+          <button
+            onClick={() => setActiveTab('pending')}
             className={`main-tab ${activeTab === 'pending' ? 'active' : ''}`}
           >
             Pending Requests
             {requests.length > 0 && <span className="notif-badge">{requests.length}</span>}
           </button>
-          <button 
-            onClick={() => setActiveTab('history')} 
+          <button
+            onClick={() => setActiveTab('history')}
             className={`main-tab ${activeTab === 'history' ? 'active' : ''}`}
           >
             Resolution History
@@ -192,7 +191,7 @@ export default function AdminWalletManagement() {
                     <tr key={req._id}>
                       <td style={{ fontWeight: 'bold' }}>{req.userId?.name || 'Unknown User'}</td>
                       <td>
-                        <span style={{ 
+                        <span style={{
                           color: req.type === 'deposit' ? '#00d27f' : '#ff4757',
                           backgroundColor: req.type === 'deposit' ? 'rgba(0,210,127,0.1)' : 'rgba(255,71,87,0.1)',
                           padding: '4px 10px',
@@ -205,8 +204,8 @@ export default function AdminWalletManagement() {
                       </td>
                       <td style={{ fontWeight: 'bold' }}>₹{req.amount}</td>
                       <td>
-                        <button 
-                          onClick={() => setSelectedRequest(req)} 
+                        <button
+                          onClick={() => setSelectedRequest(req)}
                           style={{ backgroundColor: '#0dcaf0', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px', boxShadow: '0 2px 5px rgba(13,202,240,0.3)' }}
                         >
                           Review
@@ -275,8 +274,8 @@ export default function AdminWalletManagement() {
       {selectedRequest && (
         <div style={modalOverlayStyle}>
           <div className="modal-content" style={modalContentStyle}>
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '15px', marginBottom: '20px' }}>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '15px', marginBottom: '20px', gap: '15px', flexWrap: 'wrap' }}>
               <h3 style={{ margin: 0, color: 'white', fontSize: '20px' }}>Review {selectedRequest.type.toUpperCase()}</h3>
               <button onClick={() => setSelectedRequest(null)} style={{ background: 'none', border: 'none', color: '#a8b2d1', cursor: 'pointer', fontSize: '24px', lineHeight: 1 }}>&times;</button>
             </div>
@@ -284,7 +283,7 @@ export default function AdminWalletManagement() {
             <div style={modalDataBoxStyle}>
               <p style={detailRowStyle}><span style={detailLabelStyle}>User:</span> <span style={detailValueStyle}>{selectedRequest.userId?.name}</span></p>
               <p style={detailRowStyle}><span style={detailLabelStyle}>Email:</span> <span style={detailValueStyle}>{selectedRequest.userId?.email}</span></p>
-              
+
               {/* DISPLAY DEPOSIT LOGIC */}
               {selectedRequest.type === 'deposit' && (
                 <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
@@ -295,18 +294,18 @@ export default function AdminWalletManagement() {
                   </div>
                 </div>
               )}
-              
+
               {/* DISPLAY WITHDRAWAL LOGIC WITH TDS */}
               {selectedRequest.type === 'withdraw' && (
                 <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
                   <p style={detailRowStyle}><span style={detailLabelStyle}>Gross Amount:</span> <span style={detailValueStyle}>₹{selectedRequest.amount}</span></p>
                   <p style={detailRowStyle}><span style={detailLabelStyle}>TDS (1%):</span> <span style={{ ...detailValueStyle, color: '#ff4757' }}>- ₹{selectedRequest.tdsAmount}</span></p>
-                  
+
                   <div style={{ backgroundColor: 'rgba(0, 210, 127, 0.1)', border: '1px solid rgba(0, 210, 127, 0.3)', padding: '15px', borderRadius: '8px', marginTop: '15px', textAlign: 'center' }}>
                     <p style={{ margin: '0 0 5px 0', fontSize: '12px', color: '#00d27f', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>Net Amount to Pay</p>
                     <p style={{ margin: 0, color: '#00d27f', fontSize: '28px', fontWeight: '900' }}>₹{selectedRequest.netAmount}</p>
                   </div>
-                  
+
                   <div style={{ backgroundColor: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '8px', marginTop: '15px', border: '1px solid rgba(255,255,255,0.1)' }}>
                     <p style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#a8b2d1', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>User Bank Details</p>
                     <p style={detailRowStyle}><span style={detailLabelStyle}>Bank:</span> <span style={detailValueStyle}>{selectedRequest.bankName}</span></p>
@@ -317,12 +316,12 @@ export default function AdminWalletManagement() {
                 </div>
               )}
             </div>
-            
+
             <div className="modal-actions" style={{ display: 'flex', gap: '15px', marginTop: '25px' }}>
               <button onClick={() => handleResolve(selectedRequest._id, 'accept')} className="btn-primary" style={{ flex: 1 }}>Approve & Pay</button>
               <button onClick={() => handleResolve(selectedRequest._id, 'reject')} className="btn-danger" style={{ flex: 1 }}>Reject</button>
             </div>
-            
+
           </div>
         </div>
       )}
@@ -332,7 +331,7 @@ export default function AdminWalletManagement() {
 
 // STYLES
 const pageStyle = {
-  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)', 
+  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)',
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'flex-start',
@@ -343,20 +342,20 @@ const pageStyle = {
 };
 
 const containerStyle = {
-  background: 'rgba(10, 25, 47, 0.7)', 
-  backdropFilter: 'blur(16px)', 
-  WebkitBackdropFilter: 'blur(16px)', 
-  border: '1px solid rgba(255, 255, 255, 0.2)', 
+  background: 'rgba(10, 25, 47, 0.7)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
   padding: '40px',
-  borderRadius: '20px', 
-  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)', 
+  borderRadius: '20px',
+  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
   maxWidth: '900px',
   width: '100%',
   boxSizing: 'border-box'
 };
 
 const titleStyle = {
-  color: '#ffffff', 
+  color: '#ffffff',
   margin: '0',
   fontSize: '26px',
   fontWeight: '800',
@@ -364,10 +363,10 @@ const titleStyle = {
 };
 
 const emptyStateStyle = {
-  padding: '40px 20px', 
-  textAlign: 'center', 
-  background: 'rgba(255,255,255,0.02)', 
-  borderRadius: '12px', 
+  padding: '40px 20px',
+  textAlign: 'center',
+  background: 'rgba(255,255,255,0.02)',
+  borderRadius: '12px',
   border: '1px dashed rgba(255,255,255,0.1)'
 };
 

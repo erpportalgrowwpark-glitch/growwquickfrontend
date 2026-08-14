@@ -6,9 +6,9 @@ export default function UserWallet() {
   const [balance, setBalance] = useState(0);
   const [history, setHistory] = useState([]);
   const [savedBanks, setSavedBanks] = useState([]);
-  const [adminBankDetails, setAdminBankDetails] = useState(null); 
+  const [adminBankDetails, setAdminBankDetails] = useState(null);
   const [message, setMessage] = useState('');
-  
+
   // Tab State for History Filtering
   const [activeTab, setActiveTab] = useState('deposit'); // 'deposit', 'withdraw', or 'interest'
 
@@ -24,9 +24,9 @@ export default function UserWallet() {
   const [branchName, setBranchName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [ifscCode, setIfscCode] = useState('');
-  
+
   const navigate = useNavigate();
-  
+
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
     return { headers: { Authorization: `Bearer ${token}` } };
@@ -40,7 +40,7 @@ export default function UserWallet() {
     try {
       const balRes = await axios.get('https://quickgrowwbackend.onrender.com/api/wallet/balance', getAuthHeaders());
       setBalance(balRes.data.balance);
-      
+
       const histRes = await axios.get('https://quickgrowwbackend.onrender.com/api/wallet/history', getAuthHeaders());
       setHistory(histRes.data);
 
@@ -60,7 +60,7 @@ export default function UserWallet() {
       const response = await axios.post('https://quickgrowwbackend.onrender.com/api/wallet/deposit', { amount: Number(depositAmount), utr }, getAuthHeaders());
       setMessage(response.data.message);
       setDepositAmount(''); setUtr('');
-      fetchWalletData(); 
+      fetchWalletData();
       setTimeout(() => { setShowDepositModal(false); setMessage(''); }, 3000);
     } catch (error) {
       setMessage(error.response?.data?.message || 'Deposit request failed');
@@ -72,7 +72,7 @@ export default function UserWallet() {
     try {
       const response = await axios.post('https://quickgrowwbackend.onrender.com/api/wallet/withdraw', { amount: Number(withdrawAmount), bankName, branchName, accountNumber, ifscCode }, getAuthHeaders());
       setMessage(response.data.message);
-      fetchWalletData(); 
+      fetchWalletData();
       setWithdrawAmount(''); setBankName(''); setBranchName(''); setAccountNumber(''); setIfscCode('');
       setTimeout(() => { setShowWithdrawModal(false); setMessage(''); }, 3000);
     } catch (error) {
@@ -272,12 +272,15 @@ export default function UserWallet() {
       </style>
 
       <div className="glass-container" style={containerStyle}>
-        
+
         {/* HEADER */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px', gap: '15px', flexWrap: 'wrap' }}>
           <h2 style={titleStyle}>My Wallet</h2>
-          <button onClick={() => navigate('/dashboard')} className="btn-outline" style={{ width: 'auto', padding: '8px 15px' }}>
-            Back
+          <button onClick={() => navigate('/dashboard')} style={{ width: '36px', height: '36px', padding: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', backgroundColor: '#ff4757', color: 'white', border: 'none', cursor: 'pointer', flexShrink: 0, boxShadow: '0 4px 10px rgba(255, 71, 87, 0.3)' }} title="Go Back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
           </button>
         </div>
 
@@ -285,7 +288,7 @@ export default function UserWallet() {
         <div className="debit-card" style={debitCardStyle}>
           <div className="card-circle-1"></div>
           <div className="card-circle-2"></div>
-          
+
           {/* Card Top: Chip & Brand */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', zIndex: 2 }}>
             <div className="card-chip"></div>
@@ -304,7 +307,7 @@ export default function UserWallet() {
                 **** **** 8892
               </p>
             </div>
-            
+
             <div style={{ textAlign: 'right' }}>
               <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '1px' }}>
                 Balance
@@ -325,7 +328,7 @@ export default function UserWallet() {
 
         {/* HIGHLIGHTED CENTERED TABS */}
         <div style={{ textAlign: 'center' }}>
-          
+
           <div className="tab-container">
             <button className={`tab-btn ${activeTab === 'deposit' ? 'active' : ''}`} onClick={() => setActiveTab('deposit')}>Deposits</button>
             <button className={`tab-btn ${activeTab === 'withdraw' ? 'active' : ''}`} onClick={() => setActiveTab('withdraw')}>Withdrawals</button>
@@ -368,7 +371,7 @@ export default function UserWallet() {
         <div style={modalOverlayStyle}>
           <div className="modal-content" style={modalContentStyle}>
             <h3 style={{ marginTop: 0, color: 'white' }}>Deposit Funds</h3>
-            
+
             <div style={adminBankBoxStyle}>
               <p style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: 'bold', color: '#00d27f' }}>Admin Bank Details:</p>
               {adminBankDetails ? (
@@ -384,7 +387,7 @@ export default function UserWallet() {
             </div>
 
             {message && <p style={{ color: message.includes('success') ? '#00d27f' : '#ff4757' }}>{message}</p>}
-            
+
             <form onSubmit={handleDepositSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
               <input type="number" placeholder="Enter Amount (₹)" value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} required className="custom-input" />
               <input type="text" placeholder="Enter UTR / Txn ID" value={utr} onChange={(e) => setUtr(e.target.value)} required className="custom-input" />
@@ -402,7 +405,7 @@ export default function UserWallet() {
         <div style={modalOverlayStyle}>
           <div className="modal-content" style={{ ...modalContentStyle, maxWidth: '500px' }}>
             <h3 style={{ marginTop: 0, color: 'white' }}>Withdraw Funds</h3>
-            
+
             {savedBanks.length > 0 && (
               <div style={{ textAlign: 'left', marginBottom: '20px' }}>
                 <p style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#a8b2d1' }}>Tap a saved bank to auto-fill:</p>
@@ -418,10 +421,10 @@ export default function UserWallet() {
             )}
 
             {message && <p style={{ color: message.includes('success') ? '#00d27f' : '#ff4757' }}>{message}</p>}
-            
+
             <form onSubmit={handleWithdrawSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
               <input type="number" placeholder="Withdraw Amount (₹)" value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} required className="custom-input" />
-              
+
               {/* LIVE TDS CALCULATION UI */}
               {withdrawAmount && Number(withdrawAmount) > 0 && (
                 <div style={tdsBoxStyle}>
@@ -437,7 +440,7 @@ export default function UserWallet() {
               <input type="text" placeholder="Branch Name" value={branchName} onChange={(e) => setBranchName(e.target.value)} required className="custom-input" />
               <input type="text" placeholder="Account Number" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} required className="custom-input" />
               <input type="text" placeholder="IFSC Code" value={ifscCode} onChange={(e) => setIfscCode(e.target.value)} required className="custom-input" />
-              
+
               <div className="modal-actions" style={{ marginTop: '5px' }}>
                 <button type="submit" className="btn-primary">Request</button>
                 <button type="button" onClick={() => setShowWithdrawModal(false)} className="btn-danger-outline">Cancel</button>
@@ -452,7 +455,7 @@ export default function UserWallet() {
 
 // STYLES
 const pageStyle = {
-  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)', 
+  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)',
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'flex-start',
@@ -463,13 +466,13 @@ const pageStyle = {
 };
 
 const containerStyle = {
-  background: 'rgba(10, 25, 47, 0.7)', 
-  backdropFilter: 'blur(16px)', 
-  WebkitBackdropFilter: 'blur(16px)', 
-  border: '1px solid rgba(255, 255, 255, 0.2)', 
+  background: 'rgba(10, 25, 47, 0.7)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
   padding: '40px',
-  borderRadius: '20px', 
-  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)', 
+  borderRadius: '20px',
+  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
   maxWidth: '800px',
   width: '100%',
   boxSizing: 'border-box'
@@ -480,22 +483,22 @@ const debitCardStyle = {
   border: '1px solid rgba(0, 210, 127, 0.3)',
   padding: '25px 30px',
   borderRadius: '16px',
-  margin: '0 auto 30px auto', 
+  margin: '0 auto 30px auto',
   boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
   position: 'relative',
   overflow: 'hidden',
   color: 'white',
-  maxWidth: '400px', 
+  maxWidth: '400px',
   width: '100%',
-  aspectRatio: '1.586 / 1', 
+  aspectRatio: '1.586 / 1',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between', 
+  justifyContent: 'space-between',
   boxSizing: 'border-box'
 };
 
 const titleStyle = {
-  color: '#ffffff', 
+  color: '#ffffff',
   margin: '0',
   fontSize: '26px',
   fontWeight: '800'
@@ -538,11 +541,11 @@ const adminBankBoxStyle = {
 };
 
 const tdsBoxStyle = {
-  backgroundColor: 'rgba(255, 193, 7, 0.05)', 
-  padding: '15px', 
-  borderRadius: '8px', 
-  textAlign: 'left', 
-  fontSize: '14px', 
+  backgroundColor: 'rgba(255, 193, 7, 0.05)',
+  padding: '15px',
+  borderRadius: '8px',
+  textAlign: 'left',
+  fontSize: '14px',
   borderLeft: '4px solid #ffc107',
   marginBottom: '5px'
 };

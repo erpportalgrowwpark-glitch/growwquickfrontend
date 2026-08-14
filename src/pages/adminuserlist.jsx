@@ -4,16 +4,16 @@ import axios from 'axios';
 
 export default function AdminUserList() {
   const [users, setUsers] = useState([]);
-  
+
   // Modal States
   const [activeModal, setActiveModal] = useState(null); // 'password' or 'funds'
   const [selectedUser, setSelectedUser] = useState(null);
-  
+
   // Input States
   const [newPassword, setNewPassword] = useState('');
   const [fundAmount, setFundAmount] = useState('');
   const [message, setMessage] = useState('');
-  
+
   const navigate = useNavigate();
 
   const getAdminHeaders = () => {
@@ -54,7 +54,7 @@ export default function AdminUserList() {
     try {
       await axios.delete(`https://quickgrowwbackend.onrender.com/api/admin/users/${userId}`, getAdminHeaders());
       fetchUsers(); // Refresh list
-    } catch(error) {
+    } catch (error) {
       alert(error.response?.data?.message || 'Failed to delete user');
     }
   };
@@ -65,7 +65,7 @@ export default function AdminUserList() {
       const response = await axios.put(`https://quickgrowwbackend.onrender.com/api/admin/users/${selectedUser._id}/password`, { newPassword }, getAdminHeaders());
       setMessage(response.data.message);
       setTimeout(() => closeModal(), 2000);
-    } catch(error) {
+    } catch (error) {
       setMessage(error.response?.data?.message || 'Failed to update password');
     }
   };
@@ -75,7 +75,7 @@ export default function AdminUserList() {
       setMessage('Please enter a valid amount');
       return;
     }
-    
+
     if (action === 'subtract' && Number(fundAmount) > selectedUser.walletBalance) {
       setMessage('Amount exceeds current wallet balance');
       return;
@@ -83,14 +83,14 @@ export default function AdminUserList() {
 
     try {
       const response = await axios.post(
-        `https://quickgrowwbackend.onrender.com/api/admin/users/${selectedUser._id}/balance`, 
-        { amount: Number(fundAmount), action }, 
+        `https://quickgrowwbackend.onrender.com/api/admin/users/${selectedUser._id}/balance`,
+        { amount: Number(fundAmount), action },
         getAdminHeaders()
       );
       setMessage(response.data.message);
       fetchUsers(); // Refresh list to show new balance
       setTimeout(() => closeModal(), 2000);
-    } catch(error) {
+    } catch (error) {
       setMessage(error.response?.data?.message || 'Failed to adjust funds');
     }
   };
@@ -185,16 +185,15 @@ export default function AdminUserList() {
       </style>
 
       <div className="glass-container" style={containerStyle}>
-        
+
         {/* HEADER */}
-        <div className="header-action" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+        <div className="header-action" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', gap: '15px', flexWrap: 'wrap' }}>
           <h2 style={titleStyle}>User Management</h2>
-          <button onClick={() => navigate('/admin-dashboard')} className="btn-outline">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <button onClick={() => navigate('/admin-dashboard')} style={{ width: '36px', height: '36px', padding: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', backgroundColor: '#ff4757', color: 'white', border: 'none', cursor: 'pointer', flexShrink: 0, boxShadow: '0 4px 10px rgba(255, 71, 87, 0.3)' }} title="Go Back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            Dashboard
           </button>
         </div>
 
@@ -234,14 +233,14 @@ export default function AdminUserList() {
                     </td>
                     <td>
                       <div style={{ display: 'flex', gap: '8px' }}>
-                        
+
                         <button onClick={() => navigate(`/admin-user-transactions/${user._id}`)} className="action-btn act-view" title="View Account">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                           </svg>
                         </button>
-                        
+
                         <button onClick={() => openModal('funds', user)} className="action-btn act-funds" title="Adjust Funds">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -275,23 +274,23 @@ export default function AdminUserList() {
       </div>
 
       {/* --- MODALS --- */}
-      
+
       {/* PASSWORD RESET MODAL */}
       {activeModal === 'password' && selectedUser && (
         <div style={modalOverlayStyle}>
           <div className="modal-content" style={modalContentStyle}>
             <h3 style={{ margin: '0 0 15px 0', color: 'white' }}>Reset Password</h3>
             <p style={{ margin: '0 0 20px 0', fontSize: '13px', color: '#a8b2d1' }}>Updating password for: <b>{selectedUser.email}</b></p>
-            
+
             {message && <div style={messageStyle(message)}>{message}</div>}
 
             <form onSubmit={handlePasswordReset} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              <input 
-                type="text" 
-                placeholder="Enter new password (min 6 chars)" 
-                value={newPassword} 
-                onChange={(e) => setNewPassword(e.target.value)} 
-                required 
+              <input
+                type="text"
+                placeholder="Enter new password (min 6 chars)"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
                 className="custom-input"
               />
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
@@ -308,7 +307,7 @@ export default function AdminUserList() {
         <div style={modalOverlayStyle}>
           <div className="modal-content" style={modalContentStyle}>
             <h3 style={{ margin: '0 0 15px 0', color: 'white' }}>Adjust Wallet Balance</h3>
-            
+
             <div style={{ backgroundColor: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid rgba(255,255,255,0.1)' }}>
               <p style={{ margin: '0 0 5px 0', fontSize: '12px', color: '#a8b2d1', textTransform: 'uppercase' }}>Target Account</p>
               <p style={{ margin: '0 0 5px 0', color: 'white', fontWeight: 'bold' }}>{selectedUser.name}</p>
@@ -318,14 +317,14 @@ export default function AdminUserList() {
             {message && <div style={messageStyle(message)}>{message}</div>}
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              <input 
-                type="number" 
-                placeholder="Enter Amount (₹)" 
-                value={fundAmount} 
-                onChange={(e) => setFundAmount(e.target.value)} 
+              <input
+                type="number"
+                placeholder="Enter Amount (₹)"
+                value={fundAmount}
+                onChange={(e) => setFundAmount(e.target.value)}
                 className="custom-input"
               />
-              
+
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                 <button onClick={() => handleFundAdjustment('add')} className="btn-primary" style={{ flex: 1 }}>Add Funds</button>
                 <button onClick={() => handleFundAdjustment('subtract')} className="btn-danger" style={{ flex: 1 }}>Deduct Funds</button>
@@ -342,7 +341,7 @@ export default function AdminUserList() {
 
 // STYLES
 const pageStyle = {
-  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)', 
+  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)',
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'flex-start',
@@ -353,20 +352,20 @@ const pageStyle = {
 };
 
 const containerStyle = {
-  background: 'rgba(10, 25, 47, 0.7)', 
-  backdropFilter: 'blur(16px)', 
-  WebkitBackdropFilter: 'blur(16px)', 
-  border: '1px solid rgba(255, 255, 255, 0.2)', 
+  background: 'rgba(10, 25, 47, 0.7)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
   padding: '40px',
-  borderRadius: '20px', 
-  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)', 
+  borderRadius: '20px',
+  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
   maxWidth: '900px',
   width: '100%',
   boxSizing: 'border-box'
 };
 
 const titleStyle = {
-  color: '#ffffff', 
+  color: '#ffffff',
   margin: '0',
   fontSize: '26px',
   fontWeight: '800',
@@ -374,10 +373,10 @@ const titleStyle = {
 };
 
 const emptyStateStyle = {
-  padding: '60px 20px', 
-  textAlign: 'center', 
-  background: 'rgba(255,255,255,0.02)', 
-  borderRadius: '12px', 
+  padding: '60px 20px',
+  textAlign: 'center',
+  background: 'rgba(255,255,255,0.02)',
+  borderRadius: '12px',
   border: '1px dashed rgba(255,255,255,0.1)'
 };
 

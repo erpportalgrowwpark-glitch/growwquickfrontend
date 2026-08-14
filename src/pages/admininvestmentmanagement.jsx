@@ -31,8 +31,8 @@ export default function AdminInvestmentManagement() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'https://quickgrowwbackend.onrender.com/api/admin-investment/rates', 
-        { rate: newRate, riskLevel }, 
+        'https://quickgrowwbackend.onrender.com/api/admin-investment/rates',
+        { rate: newRate, riskLevel },
         getAdminHeaders()
       );
       setMessage(response.data.message);
@@ -228,23 +228,22 @@ export default function AdminInvestmentManagement() {
       </style>
 
       <div className="glass-container" style={containerStyle}>
-        
+
         {/* HEADER */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '20px', gap: '15px', flexWrap: 'wrap' }}>
           <h2 style={titleStyle}>Investment Rates</h2>
-          <button onClick={() => navigate('/admin-dashboard')} className="btn-outline">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <button onClick={() => navigate('/admin-dashboard')} style={{ width: '36px', height: '36px', padding: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', backgroundColor: '#ff4757', color: 'white', border: 'none', cursor: 'pointer', flexShrink: 0, boxShadow: '0 4px 10px rgba(255, 71, 87, 0.3)' }} title="Go Back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            Dashboard
           </button>
         </div>
 
         {/* ADD NEW RATE FORM */}
         <div style={formBoxStyle}>
           <h3 style={sectionTitleStyle}>Add New Percentage Option</h3>
-          
+
           {message && (
             <div style={{
               padding: '12px',
@@ -260,14 +259,14 @@ export default function AdminInvestmentManagement() {
               {message}
             </div>
           )}
-          
+
           <form onSubmit={handleAddRate} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            
+
             <div>
               <label style={labelStyle}>Percentage Rate (%)</label>
-              <input 
+              <input
                 type="number" step="0.01" placeholder="e.g. 1.5" required
-                value={newRate} onChange={(e) => setNewRate(e.target.value)} 
+                value={newRate} onChange={(e) => setNewRate(e.target.value)}
                 className="custom-input"
               />
             </div>
@@ -279,8 +278,8 @@ export default function AdminInvestmentManagement() {
                   const isActive = riskLevel === level;
                   const activeColor = getRiskBadgeColor(level);
                   return (
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       key={level}
                       onClick={() => setRiskLevel(level)}
                       className="risk-toggle-btn"
@@ -307,7 +306,7 @@ export default function AdminInvestmentManagement() {
 
         {/* ACTIVE RATES LIST */}
         <h3 style={{ ...sectionTitleStyle, marginTop: '40px' }}>Active Available Rates</h3>
-        
+
         {rates.length === 0 ? (
           <div style={{ padding: '40px 20px', textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px dashed rgba(255,255,255,0.1)' }}>
             <p style={{ color: '#a8b2d1', margin: 0, fontSize: '15px' }}>No interest rates added yet. Users cannot make investments right now.</p>
@@ -318,20 +317,20 @@ export default function AdminInvestmentManagement() {
               const riskTag = rateObj.riskLevel || 'NO LEVEL';
               return (
                 <div key={rateObj._id} className="rate-card">
-                  
+
                   <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                     <div>
                       <p style={{ margin: '0 0 5px 0', fontSize: '11px', color: '#8892b0', textTransform: 'uppercase', letterSpacing: '1px' }}>Daily Rate</p>
                       <h2 style={{ margin: 0, color: '#00d27f', fontSize: '28px', fontWeight: '900' }}>{rateObj.rate}%</h2>
                     </div>
-                    
-                    <div style={{ 
-                      backgroundColor: 'rgba(255,255,255,0.05)', 
+
+                    <div style={{
+                      backgroundColor: 'rgba(255,255,255,0.05)',
                       border: `1px solid ${getRiskBadgeColor(riskTag)}`,
-                      color: getRiskBadgeColor(riskTag), 
-                      padding: '8px 12px', 
-                      borderRadius: '8px', 
-                      fontSize: '13px', 
+                      color: getRiskBadgeColor(riskTag),
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      fontSize: '13px',
                       fontWeight: 'bold',
                       display: 'flex',
                       alignItems: 'center',
@@ -362,7 +361,7 @@ export default function AdminInvestmentManagement() {
 
 // STYLES
 const pageStyle = {
-  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)', 
+  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)',
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'flex-start',
@@ -373,13 +372,13 @@ const pageStyle = {
 };
 
 const containerStyle = {
-  background: 'rgba(10, 25, 47, 0.7)', 
-  backdropFilter: 'blur(16px)', 
-  WebkitBackdropFilter: 'blur(16px)', 
-  border: '1px solid rgba(255, 255, 255, 0.2)', 
+  background: 'rgba(10, 25, 47, 0.7)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
   padding: '40px',
-  borderRadius: '20px', 
-  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)', 
+  borderRadius: '20px',
+  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
   maxWidth: '700px',
   width: '100%',
   boxSizing: 'border-box'
@@ -394,7 +393,7 @@ const formBoxStyle = {
 };
 
 const titleStyle = {
-  color: '#ffffff', 
+  color: '#ffffff',
   margin: '0',
   fontSize: '26px',
   fontWeight: '800',
@@ -411,10 +410,10 @@ const sectionTitleStyle = {
   display: 'inline-block'
 };
 
-const labelStyle = { 
-  display: 'block', 
-  marginBottom: '8px', 
-  fontSize: '13px', 
+const labelStyle = {
+  display: 'block',
+  marginBottom: '8px',
+  fontSize: '13px',
   fontWeight: 'bold',
   color: '#a8b2d1',
   textTransform: 'uppercase',

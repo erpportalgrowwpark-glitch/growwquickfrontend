@@ -37,13 +37,13 @@ export default function UserInvestmentsHistory() {
     const lockInDays = 180;
     const createdDate = new Date(dateString);
     const currentDate = new Date();
-    
+
     // Calculate time difference in milliseconds
     const diffTime = currentDate - createdDate;
     // Convert to days
     const daysPassed = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     const daysRemaining = lockInDays - daysPassed;
-    
+
     return daysRemaining > 0 ? daysRemaining : 0;
   };
 
@@ -131,16 +131,15 @@ export default function UserInvestmentsHistory() {
       </style>
 
       <div className="glass-container" style={containerStyle}>
-        
+
         {/* HEADER */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '20px', gap: '15px', flexWrap: 'wrap' }}>
           <h2 style={titleStyle}>Active Investments</h2>
-          <button onClick={() => navigate('/investments')} className="btn-outline">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <button onClick={() => navigate('/investments')} style={{ width: '36px', height: '36px', padding: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', backgroundColor: '#ff4757', color: 'white', border: 'none', cursor: 'pointer', flexShrink: 0, boxShadow: '0 4px 10px rgba(255, 71, 87, 0.3)' }} title="Go Back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            Back
           </button>
         </div>
 
@@ -156,24 +155,24 @@ export default function UserInvestmentsHistory() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
             {investments.map(inv => {
               const daysRemaining = calculateDaysRemaining(inv.createdAt);
-              
+
               return (
                 <div key={inv._id} className="inv-card">
-                  
+
                   {/* Left: Principal Amount, Date & Days Remaining */}
                   <div className="card-section">
                     <p style={{ margin: 0, fontSize: '12px', color: '#8892b0', textTransform: 'uppercase', letterSpacing: '1px' }}>Principal</p>
                     <h3 style={{ margin: '0', color: '#00d27f', fontSize: '24px', fontWeight: '900' }}>₹{inv.principalAmount}</h3>
-                    
+
                     <p style={{ margin: '5px 0 0 0', fontSize: '13px', color: '#a8b2d1' }}>
                       <span style={{ color: '#ffffff' }}>Locked on:</span> {formatDate(inv.createdAt)}
                     </p>
-                    
+
                     {/* DYNAMIC DAYS REMAINING */}
-                    <p style={{ 
-                      margin: '4px 0 0 0', 
-                      fontSize: '13px', 
-                      color: daysRemaining > 0 ? '#f39c12' : '#00d27f', 
+                    <p style={{
+                      margin: '4px 0 0 0',
+                      fontSize: '13px',
+                      color: daysRemaining > 0 ? '#f39c12' : '#00d27f',
                       fontWeight: 'bold',
                       display: 'flex',
                       alignItems: 'center',
@@ -214,7 +213,7 @@ export default function UserInvestmentsHistory() {
 
 // STYLES
 const pageStyle = {
-  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)', 
+  background: 'linear-gradient(135deg, #000d22 0%, #002056 50%, #0a192f 100%)',
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'flex-start',
@@ -225,20 +224,20 @@ const pageStyle = {
 };
 
 const containerStyle = {
-  background: 'rgba(10, 25, 47, 0.7)', 
-  backdropFilter: 'blur(16px)', 
-  WebkitBackdropFilter: 'blur(16px)', 
-  border: '1px solid rgba(255, 255, 255, 0.2)', 
+  background: 'rgba(10, 25, 47, 0.7)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
   padding: '40px',
-  borderRadius: '20px', 
-  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)', 
+  borderRadius: '20px',
+  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
   maxWidth: '800px',
   width: '100%',
   boxSizing: 'border-box'
 };
 
 const titleStyle = {
-  color: '#ffffff', 
+  color: '#ffffff',
   margin: '0',
   fontSize: '26px',
   fontWeight: '800',
@@ -250,13 +249,13 @@ const statusBadgeStyle = (status) => {
   if (status === 'active' || status === 'approved') { bg = 'rgba(0, 210, 127, 0.2)'; col = '#00d27f'; }
   if (status === 'completed' || status === 'closed') { bg = 'rgba(13, 202, 240, 0.2)'; col = '#0dcaf0'; }
   if (status === 'rejected') { bg = 'rgba(255, 71, 87, 0.2)'; col = '#ff4757'; }
-  return { 
-    padding: '6px 12px', 
-    borderRadius: '12px', 
-    fontSize: '12px', 
-    fontWeight: 'bold', 
-    color: col, 
-    backgroundColor: bg, 
+  return {
+    padding: '6px 12px',
+    borderRadius: '12px',
+    fontSize: '12px',
+    fontWeight: 'bold',
+    color: col,
+    backgroundColor: bg,
     whiteSpace: 'nowrap',
     display: 'inline-block'
   };
